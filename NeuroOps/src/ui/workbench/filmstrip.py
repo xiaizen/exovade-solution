@@ -192,7 +192,12 @@ class RangeGraphicsItem(QGraphicsObject):
 # -----------------------------------------------------------------------------
 # MAIN VIEW: FilmstripTimeline (QGraphicsView)
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# MAIN VIEW: FilmstripTimeline (QGraphicsView)
+# -----------------------------------------------------------------------------
 class FilmstripTimeline(QGraphicsView):
+    selection_changed = pyqtSignal(float, float) # start_sec, end_sec
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.scene = QGraphicsScene()
@@ -246,15 +251,41 @@ class FilmstripTimeline(QGraphicsView):
         # Update Range Item
         if not self.range_item:
             self.range_item = RangeGraphicsItem(self.thumb_h, total_width)
+            # FORCE FULL WIDTH DEFAULT
+            self.range_item.left_x = 0
+            self.range_item.right_x = total_width
+            
             self.scene.addItem(self.range_item)
             self.range_item.setZValue(10)
+            
+            # Connect internal signal to external signal
+            self.range_item.rangeChanged.connect(self.emit_selection_change)
+            
+            # Trigger initial emit
+            self.emit_selection_change()
         else:
-            # Update width of range item so scrim works
+            # Check if right handle was at the edge, if so, keep it at the edge
+            was_at_edge = abs(self.range_item.right_x - self.range_item.scene_w) < 1.0
+            
+            # Update width
             self.range_item.scene_w = total_width
+            
+            if was_at_edge:
+                self.range_item.right_x = total_width
+                
             # Trigger repaint
             self.range_item.prepareGeometryChange()
             self.range_item.update()
             
+            # Emit update if we moved the edge
+            if was_at_edge:
+                self.emit_selection_change()
+
+    def emit_selection_change(self, *args):
+        # Calculate seconds and emit
+        s, e = self.get_selection()
+        self.selection_changed.emit(s, e)
+
     def cleanup(self):
         if self.worker:
             self.worker.stop()

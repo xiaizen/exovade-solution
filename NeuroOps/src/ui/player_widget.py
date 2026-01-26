@@ -65,6 +65,7 @@ class PlayerWidget(QWidget):
         # --- ROW 1: Filmstrip Timeline ---
         self.timeline = FilmstripTimeline()
         self.timeline.setFixedHeight(95) # Approx 90px height
+        self.timeline.selection_changed.connect(self.handle_timeline_update)
         controls_layout.addWidget(self.timeline)
         
         # Connect timeline range changes to labels
@@ -199,9 +200,7 @@ class PlayerWidget(QWidget):
         start_sec = max(0, timestamp - 15)
         self.timeline.load_video_segment(file_path, start_time=start_sec, duration_sec=30)
         
-        # Connect Range Changed Signal
-        if self.timeline.range_item:
-            self.timeline.range_item.rangeChanged.connect(self.handle_range_changed)
+        # Note: Signal already connected in setup_ui
             
         # Update Meta
         if metadata:
@@ -273,23 +272,20 @@ class PlayerWidget(QWidget):
         if hasattr(self, 'current_video_path') and self.current_video_path:
              # Just load first 60s for perf demo
              self.timeline.load_video_segment(self.current_video_path, start_time=0.0, duration_sec=60.0)
-             # Hook signal
-             if self.timeline.range_item:
-                 self.timeline.range_item.rangeChanged.connect(self.handle_range_changed)
-                 # Trigger initial label update
-                 self.handle_range_changed(0.25, 0.75) # defaults
+             # Just load first 60s for perf demo
+             self.timeline.load_video_segment(self.current_video_path, start_time=0.0, duration_sec=60.0)
 
-    def handle_range_changed(self, start_ratio, end_ratio):
-        # We need to get actual seconds from timeline
-        s_sec, e_sec = self.timeline.get_selection()
-        self.lbl_start_time.setText(self.format_time(int(s_sec * 1000)))
-        self.lbl_end_time.setText(self.format_time(int(e_sec * 1000)))
+    def handle_timeline_update(self, start_sec, end_sec):
+        # Update labels directly from signal args
+        self.lbl_start_time.setText(self.format_time(int(start_sec * 1000)))
+        self.lbl_end_time.setText(self.format_time(int(end_sec * 1000)))
 
     def format_time(self, ms):
         seconds = (ms // 1000) % 60
         minutes = (ms // 60000) % 60
         hours = (ms // 3600000)
-        return f"{hours:02}:{minutes:02}:{seconds:02}"
+        milliseconds = ms % 1000
+        return f"{hours:02}:{minutes:02}:{seconds:02}.{milliseconds:03}"
 
     def update_duration_label(self, current_ms):
         self.label_current_time.setText(self.format_time(current_ms))
