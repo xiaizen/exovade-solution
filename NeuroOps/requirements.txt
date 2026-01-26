@@ -1,0 +1,12 @@
+PyQt6
+PyQt6-WebEngine
+numpy
+imageio[ffmpeg]
+sqlalchemy
+ultralytics
+sentence-transformers
+qdrant-client
+langchain
+langchain-community
+av
+pillow

@@ -1,0 +1,30 @@
+{
+  "rules": [
+    {
+      "name": "High Confidence Person Detection",
+      "condition": "input.class_name == 'person' and input.confidence > 0.1",
+      "actions": [
+        {
+          "type": "alert",
+          "message": "Person detected with high confidence",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "name": "Suspicious Object",
+      "condition": "input.class_name in ['knife', 'gun', 'backpack'] and input.confidence > 0.5",
+      "actions": [
+        {
+          "type": "alert",
+          "message": "Suspicious object detected",
+          "severity": "high"
+        },
+        {
+          "type": "trigger_vllm",
+          "prompt": "Describe the context of this object."
+        }
+      ]
+    }
+  ]
+}

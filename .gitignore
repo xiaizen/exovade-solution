@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Local Data / DB
+collections/
+qdrant_storage/
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual Env
+venv/
+env/
+.env
+
+# Editor
+.vscode/
+.idea/
