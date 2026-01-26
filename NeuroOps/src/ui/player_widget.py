@@ -301,5 +301,100 @@ class PlayerWidget(QWidget):
         
     def handle_save(self):
         s_sec, e_sec = self.timeline.get_selection()
+        if not hasattr(self, 'current_video_path') or not self.current_video_path:
+             print("No video loaded to save.")
+             return
+             
+        duration = e_sec - s_sec
+        if duration <= 0:
+             print("Invalid duration selected.")
+             return
+
         print(f"SAVE REQUESTED: {s_sec:.2f} to {e_sec:.2f}")
-        # Logic to save clip would go here
+        
+        try:
+            import os
+            import subprocess
+            import imageio_ffmpeg
+            from datetime import datetime
+            
+            # Normalize Input Path
+            input_path = os.path.normpath(self.current_video_path)
+            if not os.path.exists(input_path):
+                raise FileNotFoundError(f"Input file not found: {input_path}")
+
+            # Detect Desktop Path
+            user_home = os.path.expanduser("~")
+            desktop_candidates = [
+                os.path.join(user_home, "Desktop"),
+                os.path.join(user_home, "OneDrive", "Desktop"),
+                os.path.join(user_home, "OneDrive", "Masaüstü"),
+                os.path.join(user_home, "Masaüstü"),
+                os.path.dirname(input_path) # Fallback to same folder as video
+            ]
+            
+            output_dir = user_home # Ultimate fallback
+            for path in desktop_candidates:
+                if os.path.exists(path):
+                    output_dir = path
+                    break
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            
+            # Stricter Sanitization (ASCII only)
+            base_name = os.path.splitext(os.path.basename(input_path))[0]
+            import re
+            safe_base = re.sub(r'[^\w\-_]', '', base_name) # Remove all non-alphanumeric/underscore/hyphen
+            if not safe_base: safe_base = "cut_video"
+            
+            output_filename = f"{safe_base}_clip_{timestamp}.mp4"
+            output_path = os.path.join(output_dir, output_filename)
+            output_path = os.path.normpath(output_path)
+            
+            print(f"Saving to: {output_path}")
+            
+            ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+            
+            cmd = [
+                ffmpeg_exe,
+                '-y',
+                '-ss', f"{s_sec:.3f}",
+                '-i', input_path,
+                '-t', f"{duration:.3f}",
+                '-c', 'copy',
+                output_path
+            ]
+            
+            print(f"Executing: {cmd}")
+            
+            result = subprocess.run(
+                cmd, 
+                check=True, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE,
+                text=False
+            )
+            
+            print(f"Save Success: {output_path}")
+            
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.information(self, "Clip Saved", f"Saved to:\n{output_path}")
+            
+        except subprocess.CalledProcessError as e:
+            print(f"FFmpeg Error Code: {e.returncode}")
+            try:
+                stderr_output = e.stderr.decode('utf-8', errors='replace')
+                print(f"FFmpeg Output: {stderr_output}")
+            except:
+                print(f"FFmpeg Output (raw): {e.stderr}")
+                stderr_output = str(e.stderr)
+                
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "Save Error", f"FFmpeg Failed:\n{stderr_output[:200]}...")
+            
+        except Exception as e:
+            print(f"Error saving clip: {e}")
+            import traceback
+            traceback.print_exc()
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "Save Error", f"Failed to save clip:\n{str(e)}")
