@@ -27,7 +27,7 @@ class LabelStudioConnector:
                 "image": image_path
             },
             "predictions": [{
-                "model_version": "yolov8n",
+                "model_version": "yolo26n",
                 "score": metadata.get("confidence", 0),
                 "result": [{
                     "from_name": "label",

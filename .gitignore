@@ -20,3 +20,6 @@ env/
 # Editor
 .vscode/
 .idea/
+
+# Weights
+NeuroOps/weights/adaface_ir50_ms1mv2.ckpt

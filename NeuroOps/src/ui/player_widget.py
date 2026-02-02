@@ -21,6 +21,7 @@ class PlayerWidget(QWidget):
         
         # Search Result State
         self.current_search_result = None
+        self.pending_seek = None
         
         self.setup_ui()
         self.setup_player()
@@ -35,6 +36,7 @@ class PlayerWidget(QWidget):
         self.media_player.positionChanged.connect(self.position_changed)
         self.media_player.durationChanged.connect(self.duration_changed)
         self.media_player.playbackStateChanged.connect(self.media_state_changed)
+        self.media_player.mediaStatusChanged.connect(self.handle_media_status)
         self.media_player.errorOccurred.connect(self.handle_errors)
 
     def setup_ui(self):
@@ -171,10 +173,11 @@ class PlayerWidget(QWidget):
             if files:
                 self.load_video(files[0])
 
-    def load_video(self, file_path, analyze=True):
+    def load_video(self, file_path, analyze=True, auto_play=True):
         self.media_player.setSource(QUrl.fromLocalFile(file_path))
         self.btn_play.setEnabled(True)
-        self.play_video()
+        if auto_play:
+            self.play_video()
         
         # Load Timeline
         # For now, load first 60 seconds or full video if short?
@@ -190,11 +193,10 @@ class PlayerWidget(QWidget):
         """
         Loads video centered on timestamp with metadata display.
         """
-        self.load_video(file_path, analyze=False) # Do not re-analyze search results
+        self.load_video(file_path, analyze=False, auto_play=False) # Do not re-analyze search results
         
-        # Wait for duration (async) - logic simpler here:
-        # Seek to timestamp
-        self.media_player.setPosition(int(timestamp * 1000))
+        # Wait for duration (async) - Queue seek
+        self.pending_seek = int(timestamp * 1000)
         
         # Setup Timeline
         start_sec = max(0, timestamp - 15)
@@ -260,6 +262,14 @@ class PlayerWidget(QWidget):
         else:
             self.btn_play.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
 
+    def handle_media_status(self, status):
+        if status == QMediaPlayer.MediaStatus.BufferedMedia or status == QMediaPlayer.MediaStatus.LoadedMedia:
+            if self.pending_seek is not None:
+                print(f"[PLAYER] Media Ready via Status. Executing Seek: {self.pending_seek}")
+                self.media_player.setPosition(self.pending_seek)
+                self.media_player.play() # Play AFTER seek
+                self.pending_seek = None
+
     def position_changed(self, position):
         self.update_duration_label(position)
         # Sync playhead on timeline (if we had one)
@@ -270,8 +280,6 @@ class PlayerWidget(QWidget):
         
         # Initial Timeline Load (Whole video if no search result)
         if hasattr(self, 'current_video_path') and self.current_video_path:
-             # Just load first 60s for perf demo
-             self.timeline.load_video_segment(self.current_video_path, start_time=0.0, duration_sec=60.0)
              # Just load first 60s for perf demo
              self.timeline.load_video_segment(self.current_video_path, start_time=0.0, duration_sec=60.0)
 

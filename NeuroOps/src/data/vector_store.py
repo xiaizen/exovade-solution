@@ -26,6 +26,14 @@ class VectorStore:
         collections = self.client.get_collections()
         exists = any(c.name == name for c in collections.collections)
         
+        if exists:
+            # Check for dimension mismatch
+            info = self.client.get_collection(name)
+            if info.config.params.vectors.size != self.vector_size:
+                print(f"[VECTOR STORE] Dimension mismatch for {name} (Expected {self.vector_size}, Got {info.config.params.vectors.size}). Recreating...")
+                self.client.delete_collection(name)
+                exists = False
+
         if not exists:
             self.client.create_collection(
                 collection_name=name,

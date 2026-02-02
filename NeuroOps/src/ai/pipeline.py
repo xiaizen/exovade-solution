@@ -43,7 +43,7 @@ class VideoAnalysisWorker(QThread):
         try:
             # Lazy load models
             if not self.detector:
-                self.detector = ObjectDetector("yolov8n.pt")
+                self.detector = ObjectDetector("yolo26n.pt")
                 
             if not self.embedder:
                 self.embedder = ClipEmbedder()

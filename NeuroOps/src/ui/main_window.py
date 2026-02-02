@@ -11,6 +11,7 @@ from ui.rule_editor import RuleEditorWidget
 from ui.rule_editor import RuleEditorWidget
 from ui.workbench.modal import PrecisionEditorModal # Workbench
 from ui.workbench.result_player_dialog import ResultPlayerDialog
+from ui.cameras_widget import CamerasWidget
 from PyQt6.QtWidgets import QMessageBox
 
 class MainWindow(QMainWindow):
@@ -56,6 +57,9 @@ class MainWindow(QMainWindow):
 
         self.rule_editor = RuleEditorWidget()
         self.page_stack.addWidget(self.rule_editor) # Real Rule Editor
+        
+        self.cameras_widget = CamerasWidget()
+        self.page_stack.addWidget(self.cameras_widget) # Real Cameras Widget
 
     def on_search_jump(self, video_id, timestamp):
         # Switch to player and seek
@@ -114,6 +118,7 @@ class MainWindow(QMainWindow):
         self.add_nav_button("VIDEO PLAYER", 1, layout)
         self.add_nav_button("NEURAL SEARCH", 2, layout)
         self.add_nav_button("RULE EDITOR", 3, layout)
+        self.add_nav_button("CAMERAS", 4, layout)
 
         layout.addStretch()
         
