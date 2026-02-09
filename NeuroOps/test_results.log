@@ -1,0 +1,12 @@
+--- Testing OCR and Search ---
+
+1. Testing OCRProcessor...
+Detections: [{'bbox': [47, 45, 249, 113], 'text': 'HELLO', 'confidence': 0.9608636799722956}, {'bbox': [272, 44, 494, 116], 'text': 'WORLD', 'confidence': 0.7944379016547419}]
+SUCCESS: Text detected correctly.
+
+2. Testing Database Insertion...
+SUCCESS: Inserted text detection.
+
+3. Testing SearchEngine...
+Search Results: [{'score': 1.0, 'video_id': 99999, 'timestamp': 0.5, 'class_name': 'TEXT: SECRET_CODE_123', 'frame_idx': 10}]
+SUCCESS: Search found the text.

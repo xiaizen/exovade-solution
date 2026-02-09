@@ -13,6 +13,8 @@ from src.active_learning.sampler import EntropySampler
 from src.active_learning.label_studio import LabelStudioConnector
 from src.visual_cortex.reid import IdentityEncoder
 from src.agency.agent import AutonomousAgent
+from src.ai.ocr import OCRProcessor
+from src.data.models import Detection, TextDetection
 
 class VideoAnalysisWorker(QThread):
     progress_update = pyqtSignal(int)
@@ -36,6 +38,7 @@ class VideoAnalysisWorker(QThread):
         self.label_studio = LabelStudioConnector()
         self.reid = None
         self.agent = AutonomousAgent()
+        self.ocr = None
 
     def run(self):
         self.log_message.emit(f"Starting analysis for: {self.video_path}")
@@ -54,6 +57,9 @@ class VideoAnalysisWorker(QThread):
                 
             if not self.reid:
                 self.reid = IdentityEncoder()
+
+            if not self.ocr:
+                 self.ocr = OCRProcessor()
 
             # Read video metadata
             props = iio.improps(self.video_path, plugin="pyav")
@@ -169,6 +175,26 @@ class VideoAnalysisWorker(QThread):
                         )
                         session.add(det)
                     
+                    # OCR Detection every 10 frames
+                    if frame_idx % 10 == 0:
+                        text_results = self.ocr.detect_text(frame)
+                        for res in text_results:
+                            # Filter low confidence text
+                            if res['confidence'] > 0.4:
+                                text_det = TextDetection(
+                                    video_id=self.video_id,
+                                    frame_index=frame_idx,
+                                    timestamp=frame_idx / fps,
+                                    text_content=res['text'],
+                                    confidence=res['confidence'],
+                                    bbox_xyxy=res['bbox']
+                                )
+                                session.add(text_det)
+                                
+                                # Log interesting text
+                                if res['confidence'] > 0.8:
+                                     self.log_message.emit(f"[OCR] Detected: {res['text']}")
+
                     if frame_idx % 5 == 0:
                         # ... (existing detection logic) ...
                         

@@ -1,0 +1,5 @@
+names:
+- green_box
+nc: 1
+train: "C:/Users/yk214/OneDrive/Masa\xFCst\xFC/aytre/NeuroOps/dataset/images/train"
+val: "C:/Users/yk214/OneDrive/Masa\xFCst\xFC/aytre/NeuroOps/dataset/images/val"

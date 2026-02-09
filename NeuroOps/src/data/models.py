@@ -18,6 +18,7 @@ class Video(Base):
     status = Column(String, default="PENDING") # PENDING, PROCESSED, ERROR
 
     detections = relationship("Detection", back_populates="video", cascade="all, delete-orphan")
+    text_detections = relationship("TextDetection", back_populates="video", cascade="all, delete-orphan")
     summaries = relationship("SceneSummary", back_populates="video", cascade="all, delete-orphan")
 
 class SceneSummary(Base):
@@ -45,6 +46,19 @@ class Detection(Base):
     embedding_id = Column(String, nullable=True) # UUID for Qdrant point
 
     video = relationship("Video", back_populates="detections")
+
+class TextDetection(Base):
+    __tablename__ = 'text_detections'
+
+    id = Column(Integer, primary_key=True)
+    video_id = Column(Integer, ForeignKey('videos.id'), nullable=False)
+    frame_index = Column(Integer, nullable=False)
+    timestamp = Column(Float, nullable=False)
+    text_content = Column(String, nullable=False)
+    confidence = Column(Float, nullable=False)
+    bbox_xyxy = Column(JSON, nullable=False) # [x1, y1, x2, y2]
+
+    video = relationship("Video", back_populates="text_detections")
 
 def init_db(db_path):
     # Ensure usage of absolute path and forward slashes for Windows compatibility
