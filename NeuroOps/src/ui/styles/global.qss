@@ -1,0 +1,197 @@
+/* NeuralOps Global Stylesheet */
+/* Based on Reference Design Palette */
+
+/* --- Core Application --- */
+QMainWindow, QWidget {
+    background-color: #111418; /* --background */
+    color: #D5DDDD; /* --foreground */
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* --- Typography --- */
+QLabel {
+    color: #D5DDDD; /* --foreground */
+    font-size: 13px;
+}
+
+QLabel#Header {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+}
+
+QLabel#SectionHeader {
+    font-weight: 600;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+/* --- Frames & Cards --- */
+QFrame, QWidget#Card {
+    background-color: #1B1E22; /* --card */
+    border: 1px solid #2E3136; /* --border */
+    border-radius: 8px; /* --radius (approx) */
+}
+
+QFrame#Sidebar {
+    background-color: #16191C; /* --sidebar-background */
+    border-right: 1px solid #2E3136; /* --border */
+    border-radius: 0px;
+}
+
+/* --- Buttons --- */
+QPushButton {
+    background-color: #292C31; /* --secondary */
+    color: #D5DDDD; /* --secondary-foreground */
+    border: 1px solid #2E3136; /* --border */
+    border-radius: 6px; /* --radius */
+    padding: 6px 12px;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #32363D; /* --muted */
+    border-color: #1CD7AD; /* --primary hover border */
+    color: #FFFFFF;
+}
+
+QPushButton:pressed {
+    background-color: #1CD7AD; /* --primary */
+    color: #111418; /* --primary-foreground */
+}
+
+QPushButton:disabled {
+    background-color: #1B1E22;
+    color: #555555;
+    border-color: #2E3136;
+}
+
+/* --- Navigation Buttons (Sidebar) --- */
+QPushButton[class="nav_button"] {
+    background-color: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    border-radius: 0px;
+    text-align: left;
+    padding-left: 20px;
+    color: #8B949E; /* --muted-foreground */
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+QPushButton[class="nav_button"]:hover {
+    color: #D5DDDD;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+QPushButton[class="nav_button"]:checked {
+    color: #1CD7AD; /* --primary */
+    border-left: 3px solid #1CD7AD;
+    background-color: rgba(28, 215, 173, 0.1); /* --primary with opacity */
+}
+
+/* --- Inputs --- */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: #0d0f12; /* Darker than card for input */
+    border: 1px solid #2E3136; /* --input */
+    border-radius: 4px;
+    color: #D5DDDD;
+    padding: 6px;
+    selection-background-color: #1CD7AD;
+    selection-color: #111418;
+}
+
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+    border: 1px solid #1CD7AD; /* --ring */
+}
+
+/* --- Scrollbars (Webkit-like style for Qt) --- */
+QScrollBar:vertical {
+    border: none;
+    background: #111418;
+    width: 8px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #2E3136;
+    min-height: 20px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #32363D;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none;
+    height: 0px;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: #111418;
+    height: 8px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #2E3136;
+    min-width: 20px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #32363D;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    background: none;
+    width: 0px;
+}
+
+/* --- Tab Widget --- */
+QTabWidget::pane {
+    border: 1px solid #2E3136;
+    background-color: #1B1E22;
+}
+
+QTabBar::tab {
+    background: #111418;
+    color: #8B949E;
+    padding: 8px 12px;
+    margin-right: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+QTabBar::tab:selected {
+    background: #1B1E22;
+    color: #1CD7AD;
+    border-top: 2px solid #1CD7AD;
+}
+
+QTabBar::tab:hover {
+    color: #D5DDDD;
+}
+
+/* --- Search Results & Lists --- */
+QListWidget {
+    background-color: #111418;
+    border: 1px solid #2E3136;
+    border-radius: 6px;
+}
+
+QListWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #1B1E22;
+}
+
+QListWidget::item:selected {
+    background-color: rgba(28, 215, 173, 0.1);
+    color: #1CD7AD;
+    border: 1px solid #1CD7AD;
+    border-radius: 4px;
+}

@@ -199,12 +199,27 @@ class VideoAnalysisWorker(QThread):
                         # ... (existing detection logic) ...
                         
                         # Emit Stats (Moved here to capture detection count)
+                        # Emit Stats (Moved here to capture detection count)
                         det_count = len(r.boxes)
+                        
+                        # Prepare details
+                        details = []
+                        for b in r.boxes:
+                            cls_id = int(b.cls[0])
+                            conf = float(b.conf[0])
+                            cls_name = self.detector.model.names[cls_id]
+                            details.append({
+                                "class": cls_name,
+                                "confidence": conf,
+                                "box": b.xyxy[0].tolist()
+                            })
+                            
                         self.stats_update.emit({
                             "frame": frame_idx,
                             "timestamp": frame_idx / fps,
                             "detections": det_count,
-                            "classes": [self.detector.model.names[int(b.cls[0])] for b in r.boxes]
+                            "classes": [d['class'] for d in details],
+                            "details": details
                         })
 
                     if frame_idx % 30 == 0:

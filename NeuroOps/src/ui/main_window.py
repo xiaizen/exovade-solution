@@ -17,7 +17,7 @@ from PyQt6.QtWidgets import QMessageBox
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("NEURO_OPS // VISUAL_INTELLIGENCE")
+        self.setWindowTitle("EXOVADE // VISUAL_INTELLIGENCE")
         self.resize(1280, 800)
         self.setMinimumSize(1024, 768)
 
@@ -99,14 +99,14 @@ class MainWindow(QMainWindow):
         self.sidebar = QFrame()
         self.sidebar.setObjectName("Sidebar")
         self.sidebar.setFixedWidth(240)
-        self.sidebar.setStyleSheet("background-color: #080808; border-right: 1px solid #1A1A1A;")
+        # Style moved to global.qss
         
         layout = QVBoxLayout(self.sidebar)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(10)
 
         # Branding
-        branding = QLabel("NEURO_OPS")
+        branding = QLabel("EXOVADE")
         branding.setObjectName("Header")
         branding.setAlignment(Qt.AlignmentFlag.AlignCenter)
         branding.setFixedHeight(60)
@@ -126,7 +126,7 @@ class MainWindow(QMainWindow):
 
         # System Status
         status = QLabel("SYSTEM: ONLINE\nGPU: ACTIVE")
-        status.setStyleSheet("color: #444; font-size: 10px; padding: 20px;")
+        status.setObjectName("SystemStatus")
         status.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(status)
 
@@ -136,24 +136,8 @@ class MainWindow(QMainWindow):
         btn = QPushButton(text)
         btn.setCheckable(True)
         btn.setFixedHeight(45)
-        btn.setStyleSheet("""
-            QPushButton {
-                background-color: transparent;
-                border: none;
-                border-left: 3px solid transparent;
-                color: #666;
-                text-align: left;
-                padding-left: 20px;
-            }
-            QPushButton:checked {
-                color: #00FF88;
-                border-left: 3px solid #00FF88;
-                background-color: rgba(0, 255, 136, 0.05);
-            }
-            QPushButton:hover {
-                color: #E0E0E0;
-            }
-        """)
+        btn.setProperty("class", "nav_button")
+        # Style moved to global.qss
         btn.clicked.connect(lambda: self.switch_page(index, btn))
         layout.addWidget(btn)
         self.nav_buttons.append(btn)

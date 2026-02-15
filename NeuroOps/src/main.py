@@ -24,10 +24,12 @@ def main():
     app = QApplication(sys.argv)
     
     # Load Theme
-    theme_path = os.path.join(current_dir, '../assets/themes/cyberpunk.qss')
+    theme_path = os.path.join(os.path.dirname(__file__), 'ui/styles/global.qss')
     if os.path.exists(theme_path):
         with open(theme_path, 'r') as f:
             app.setStyleSheet(f.read())
+    else:
+        print(f"Warning: Stylesheet not found at {theme_path}")
             
     window = MainWindow()
     window.show()
