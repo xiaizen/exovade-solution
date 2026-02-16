@@ -94,7 +94,7 @@ class PrecisionEditorModal(QDialog):
         
         # Video Player Area (QGraphicsView for future Overlays)
         self.view = QGraphicsView()
-        self.view.setStyleSheet("border: 1px solid #333; background: #000;")
+        self.view.setStyleSheet("border: none; background: #000;")
         self.scene = QGraphicsScene()
         self.view.setScene(self.scene)
         self.view.setMinimumHeight(400)
@@ -112,7 +112,7 @@ class PrecisionEditorModal(QDialog):
         btn_save.clicked.connect(self.export_clip)
         
         btn_cancel = QPushButton("CANCEL")
-        btn_cancel.setStyleSheet("border: 1px solid #555; padding: 10px;")
+        btn_cancel.setStyleSheet("border: none; padding: 10px;")
         btn_cancel.clicked.connect(self.reject)
         
         footer.addStretch()

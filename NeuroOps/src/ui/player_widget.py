@@ -4,7 +4,7 @@ from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtMultimediaWidgets import QVideoWidget
 from PyQt6.QtCore import Qt, QUrl, QTime
 from PyQt6.QtGui import QAction, QIcon, QFont
-from src.ai.pipeline import VideoAnalysisWorker
+# VideoAnalysisWorker imported lazily in start_analysis()
 from src.data.db_manager import DatabaseManager
 from src.ui.workbench.filmstrip import FilmstripTimeline
 
@@ -47,7 +47,7 @@ class PlayerWidget(QWidget):
 
         # 1. Video Area (Black Background)
         video_container = QFrame()
-        video_container.setStyleSheet("background-color: #000; border-radius: 8px; border: 1px solid #333;")
+        video_container.setStyleSheet("background-color: #000; border-radius: 8px; border: none;")
         video_layout = QVBoxLayout(video_container)
         video_layout.setContentsMargins(1, 1, 1, 1) # Thin border
         
@@ -114,7 +114,7 @@ class PlayerWidget(QWidget):
         # Open File Button
         self.btn_open = QPushButton("OPEN")
         self.btn_open.setFixedSize(60, 30)
-        self.btn_open.setStyleSheet("background: #333; color: #AAA; border: 1px solid #444; border-radius: 4px; font-size: 10px; font-weight: bold;")
+        self.btn_open.setStyleSheet("background: #333; color: #AAA; border: none; border-radius: 4px; font-size: 10px; font-weight: bold;")
         self.btn_open.clicked.connect(self.open_file)
         action_row.addWidget(self.btn_open)
 
@@ -148,7 +148,7 @@ class PlayerWidget(QWidget):
         
         self.btn_cancel = QPushButton("Cancel")
         self.btn_cancel.setFixedSize(80, 30)
-        self.btn_cancel.setStyleSheet("background: transparent; color: #AAA; border: 1px solid #444; border-radius: 15px;")
+        self.btn_cancel.setStyleSheet("background: transparent; color: #AAA; border: none; border-radius: 15px;")
         
         self.btn_save = QPushButton("Save")
         self.btn_save.setFixedSize(80, 30)
@@ -214,6 +214,8 @@ class PlayerWidget(QWidget):
 
     def start_analysis(self, file_path):
         import os
+        from src.ai.pipeline import VideoAnalysisWorker  # Lazy import — loads AI stack only when needed
+
         filename = os.path.basename(file_path)
         # Register video in DB
         video_id = self.db_manager.add_video(file_path, filename)

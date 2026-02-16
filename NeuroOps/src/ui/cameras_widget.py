@@ -109,7 +109,7 @@ class CamerasWidget(QWidget):
         
         btn_cancel = QPushButton("Cancel")
         btn_cancel.setFixedSize(120, 40)
-        btn_cancel.setStyleSheet("background-color: transparent; border: 1px solid #444; color: #AAA;")
+        btn_cancel.setStyleSheet("background-color: transparent; border: none; color: #AAA;")
         btn_cancel.clicked.connect(self.stop_stream) # Stop stream on cancel
         
         btn_save = QPushButton("Save Camera")
@@ -176,7 +176,7 @@ class CamerasWidget(QWidget):
         pass_lbl.setStyleSheet("color: #AAA;")
         self.entry_pass = QLineEdit()
         self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
-        self.entry_pass.setStyleSheet("padding: 8px; background: #111; border: 1px solid #333; color: white;")
+        self.entry_pass.setStyleSheet("padding: 8px; background: #111; border: none; color: white;")
         pass_layout.addWidget(pass_lbl)
         pass_layout.addWidget(self.entry_pass)
         row2.addLayout(pass_layout)
@@ -215,7 +215,7 @@ class CamerasWidget(QWidget):
         
         self.preview_frame = QFrame()
         self.preview_frame.setMinimumHeight(400)
-        self.preview_frame.setStyleSheet("background-color: black; border: 1px solid #333;")
+        self.preview_frame.setStyleSheet("background-color: black; border: none;")
         
         # Layout for the preview frame
         self.preview_layout = QVBoxLayout(self.preview_frame)
@@ -301,7 +301,7 @@ class CamerasWidget(QWidget):
         layout.setContentsMargins(20, 20, 20, 20)
         
         lbl = QLabel(title)
-        lbl.setStyleSheet("font-size: 16px; font-weight: bold; color: #FFF; border-bottom: 1px solid #333; padding-bottom: 10px;")
+        lbl.setStyleSheet("font-size: 16px; font-weight: bold; color: #FFF; border-bottom: none; padding-bottom: 10px;")
         layout.addWidget(lbl)
         layout.addSpacing(10)
         
@@ -321,7 +321,7 @@ class CamerasWidget(QWidget):
         lbl.setStyleSheet("color: #AAA;")
         entry = QLineEdit()
         entry.setPlaceholderText(placeholder)
-        entry.setStyleSheet("padding: 8px; background: #111; border: 1px solid #333; color: white;")
+        entry.setStyleSheet("padding: 8px; background: #111; border: none; color: white;")
         layout.addWidget(lbl)
         layout.addWidget(entry)
         return layout
@@ -332,7 +332,7 @@ class CamerasWidget(QWidget):
         lbl.setStyleSheet("color: #AAA;")
         combo = QComboBox()
         combo.addItems(options)
-        combo.setStyleSheet("padding: 8px; background: #111; border: 1px solid #333; color: white;")
+        combo.setStyleSheet("padding: 8px; background: #111; border: none; color: white;")
         layout.addWidget(lbl)
         layout.addWidget(combo)
         return layout

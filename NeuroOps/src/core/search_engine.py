@@ -1,10 +1,12 @@
-from src.ai.embedder import ClipEmbedder
-from src.data.vector_store import VectorStore
 from src.data.db_manager import DatabaseManager
 from src.data.models import TextDetection
 
 class SearchEngine:
     def __init__(self, collection_suffix="1"):
+        # Lazy imports — avoid loading CLIP/qdrant at app startup
+        from src.ai.embedder import ClipEmbedder
+        from src.data.vector_store import VectorStore
+
         self.embedder = ClipEmbedder()
         self.vector_store = VectorStore(collection_suffix=str(collection_suffix))
         self.db = DatabaseManager()

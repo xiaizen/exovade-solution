@@ -12,14 +12,14 @@ QWidget {
 /* Glassmorphism Panel */
 QFrame#ContentPanel {
     background-color: rgba(18, 18, 18, 0.85);
-    border: 1px solid #333;
+    border: none;
     border-radius: 12px;
 }
 
 /* Buttons */
 QPushButton {
     background-color: rgba(0, 255, 136, 0.1);
-    border: 1px solid #00FF88;
+    border: none;
     color: #00FF88;
     padding: 8px 16px;
     border-radius: 6px;
@@ -37,7 +37,7 @@ QPushButton:pressed {
 
 /* Secondary Button */
 QPushButton#SecondaryBtn {
-    border-color: #00D4FF;
+    border-color: transparent;
     color: #00D4FF;
     background-color: rgba(0, 212, 255, 0.1);
 }

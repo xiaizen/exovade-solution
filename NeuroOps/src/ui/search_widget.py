@@ -38,14 +38,14 @@ class SearchWidget(QWidget):
         self.input_search.setStyleSheet("""
             QLineEdit {
                 background-color: #1a1a1a;
-                border: 1px solid #333;
+                border: none;
                 border-radius: 4px;
                 padding: 10px;
                 color: #fff;
                 font-size: 14px;
             }
             QLineEdit:focus {
-                border: 1px solid #00FF88;
+                border: none;
             }
         """)
         self.input_search.returnPressed.connect(self.add_query_section)
@@ -57,7 +57,7 @@ class SearchWidget(QWidget):
         self.btn_img.setStyleSheet("""
             QPushButton {
                 background-color: #222;
-                border: 1px solid #333;
+                border: none;
                 border-radius: 4px;
                 color: #aaa;
                 font-size: 10px;
@@ -149,7 +149,7 @@ class SearchWidget(QWidget):
         self.btn_img.setStyleSheet("""
             QPushButton {
                 background-color: #222;
-                border: 1px solid #333;
+                border: none;
                 border-radius: 4px;
                 color: #aaa;
                 font-size: 10px;

@@ -15,12 +15,12 @@ class ResultCard(QFrame):
         self.setStyleSheet("""
             QFrame {
                 background-color: #252525;
-                border: 1px solid #333;
+                border: none;
                 border-radius: 12px;
             }
             QFrame:hover {
                 background-color: #2F2F2F;
-                border: 1px solid #00FF88;
+                border: none;
                 box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
             }
             QLabel {
@@ -40,7 +40,7 @@ class ResultCard(QFrame):
             background-color: #101010;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
-            border-bottom: 1px solid #333;
+            border-bottom: none;
             font-weight: bold;
             color: #555;
             font-size: 20px;

@@ -55,7 +55,7 @@ class SearchSection(QWidget):
             img_lbl = QLabel()
             pix = QPixmap(self.image_path)
             img_lbl.setPixmap(pix.scaled(32, 32, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
-            img_lbl.setStyleSheet("background: #000; border: 1px solid #444; border-radius: 4px;")
+            img_lbl.setStyleSheet("background: #000; border: none; border-radius: 4px;")
             header_layout.addWidget(img_lbl)
         else:
             icon_lbl = QLabel("🔍") 

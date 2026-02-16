@@ -63,6 +63,19 @@ class VectorStore:
         )
         return point_id
 
+    def add_embeddings_batch(self, items):
+        """Batch upsert: items is a list of (vector, metadata) tuples."""
+        if not items:
+            return []
+        points = []
+        ids = []
+        for vector, metadata in items:
+            pid = str(uuid.uuid4())
+            ids.append(pid)
+            points.append(models.PointStruct(id=pid, vector=vector, payload=metadata))
+        self.client.upsert(collection_name=self.collection_name, points=points)
+        return ids
+
     def search(self, query_vector, limit=5, score_threshold=0.2):
         # Use query_points as it is more robust across versions or local mode
         results = self.client.query_points(

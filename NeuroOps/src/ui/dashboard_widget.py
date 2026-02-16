@@ -103,9 +103,13 @@ class StatCard(QFrame):
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {Palette.CARD};
-                border: 1px solid {Palette.BORDER};
+                border: none;
                 border-radius: 6px;
                 padding: 10px;
+            }}
+            QLabel {{
+                border: none;
+                background: transparent;
             }}
         """)
         self.setMinimumHeight(140) # Match height to chart roughly or at least taller like screenshot
@@ -137,7 +141,7 @@ class DetectionTableWidget(QTableWidget):
         self.setStyleSheet(f"""
             QTableWidget {{
                 background-color: {Palette.CARD};
-                border: 1px solid {Palette.BORDER};
+                border: none;
                 gridline-color: transparent;
                 color: {Palette.FOREGROUND};
                 border-radius: 6px;
@@ -147,7 +151,6 @@ class DetectionTableWidget(QTableWidget):
                 background-color: {Palette.CARD};
                 color: {Palette.MUTED_FOREGROUND};
                 border: none;
-                border-bottom: 1px solid {Palette.BORDER};
                 padding: 12px;
                 font-weight: bold;
                 font-size: 11px;
@@ -157,7 +160,7 @@ class DetectionTableWidget(QTableWidget):
             }}
             QTableWidget::item {{
                 padding: 12px;
-                border-bottom: 1px solid {Palette.BORDER};
+                border-bottom: none;
             }}
             QTableWidget::item:selected {{
                 background-color: transparent;
@@ -337,12 +340,12 @@ class DashboardWidget(QWidget):
             }}
             QListWidget::item {{
                 background-color: {Palette.CARD};
-                border: 1px solid {Palette.BORDER};
+                border: none;
                 border-radius: 6px;
                 margin-bottom: 10px;
             }}
             QListWidget::item:hover {{
-                border: 1px solid {Palette.PRIMARY};
+                border: none;
             }}
         """)
         self.alert_list.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
